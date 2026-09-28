@@ -1,0 +1,7 @@
+{
+  "name": "black-eye",
+  "private": true,
+  "scripts": {
+    "dev": "powershell -ExecutionPolicy Bypass -File .\\start-backend.ps1"
+  }
+}
