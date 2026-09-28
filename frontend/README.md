@@ -1,8 +1,10 @@
-# BlackEye Frontend
+# BlackEye
 
-The BlackEye frontend is a React and TypeScript security-intelligence dashboard. It provides a focused interface for public IP analysis, network and ASN intelligence, domain auditing, phone metadata, username enumeration, and local scan history.
+The BlackEye is the user-facing dashboard for a full-stack cybersecurity intelligence and OSINT-style platform. It provides a centralized interface for analyzing public network and identity-related information through structured, provider-backed workflows.
 
-The frontend is intended for educational use and authorized security research only.
+The dashboard supports IP geolocation, interactive 2D map and 3D globe views, ASN and network intelligence, domain security auditing, phone metadata, username checks, and searchable scan history. Results are presented with provider context and consistency information so users can understand both the available data and its limitations.
+
+The frontend is built with React, TypeScript, and Vite and communicates with the FastAPI backend through the `/api` proxy. It is intended for academic learning, portfolio demonstration, and authorized security research only.
 
 ## Features
 
