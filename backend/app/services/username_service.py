@@ -21,6 +21,7 @@ PLATFORMS = [
 
     # Social & Community
     {"name": "Reddit", "url": "https://www.reddit.com/user/{username}", "category": "Social"},
+    {"name": "LinkedIn", "url": "https://www.linkedin.com/in/{username}", "category": "Social"},
     {"name": "Pinterest", "url": "https://www.pinterest.com/{username}/", "category": "Social"},
     {"name": "Medium", "url": "https://medium.com/@{username}", "category": "Social"},
     {"name": "Telegram", "url": "https://t.me/{username}", "category": "Social", "check_content": "tgme_page_title"},

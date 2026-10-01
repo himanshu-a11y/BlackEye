@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import toast from 'react-hot-toast';
-import { History as HistIcon, Search, Trash2, Download, AlertTriangle, LayoutGrid, List, Globe } from 'lucide-react';
+import { History as HistIcon, Search, Trash2, Download, AlertTriangle, LayoutGrid, List, Globe, Activity, Database, ShieldCheck, Filter } from 'lucide-react';
 import { getHistory, deleteHistoryItem, clearHistory, exportHistory } from '../services/api';
 import type { HistoryRecord } from '../types';
 import PageTransition from '../components/PageTransition';
@@ -92,51 +92,75 @@ export default function History() {
   return (
     <PageTransition>
       <div className="min-h-screen w-full max-w-7xl mx-auto space-y-8 px-4 py-5 sm:px-6 lg:px-8">
-        {/* Header & Actions */}
-        <div className="flex flex-col gap-5 rounded-2xl border border-[#1a2620] bg-[#0b120e] p-5 shadow-[0_18px_45px_rgba(0,0,0,0.25)] md:flex-row md:items-end md:justify-between md:p-6">
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <HistIcon size={16} className="text-[#00d4ff]" />
-              <h1 className="font-sans text-2xl font-bold tracking-tight text-[#e2e8e4]">Telemetry Logs</h1>
+        {/* Cyber Header Banner */}
+        <div className="cyber-panel relative overflow-hidden rounded-2xl border border-[#00d4ff25] p-5 shadow-[0_18px_45px_rgba(0,0,0,0.25)] md:p-6">
+          <div className="pointer-events-none absolute right-0 top-0 h-36 w-96 bg-gradient-to-l from-[#00d4ff10] via-transparent to-transparent" />
+          <div className="relative z-10 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
+            <div>
+              <div className="mb-2 flex flex-wrap items-center gap-2">
+                <span className="flex items-center gap-1.5 rounded bg-[#00d4ff12] px-2.5 py-1 font-mono text-[10px] uppercase tracking-widest text-[#00d4ff] border border-[#00d4ff35]">
+                  <span className="h-1.5 w-1.5 rounded-full bg-[#00d4ff] pulse-dot" />
+                  MODULE: DATA-01 // TELEMETRY
+                </span>
+                <span className="font-mono text-[10px] text-[#6b7f74]">LOCAL ARCHIVE</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <HistIcon size={28} className="text-[#00d4ff] drop-shadow-[0_0_10px_rgba(0,212,255,0.45)]" />
+                <h1 className="font-mono text-2xl font-extrabold tracking-wide text-[#e2e8e4] md:text-3xl">TELEMETRY HISTORY</h1>
+              </div>
+              <p className="mt-2 max-w-xl font-mono text-xs leading-relaxed text-[#8fa89b]">
+                Review, filter, and export the results of previous intelligence operations.
+              </p>
             </div>
-            <p className="font-mono text-xs text-[#3d4f46]">{total} records stored in local database</p>
+
+            <div className="grid grid-cols-3 gap-2 sm:gap-3">
+              <div className="min-w-[82px] rounded-xl border border-[#1a2620] bg-[#050706] px-3 py-2">
+                <Database size={14} className="mb-1 text-[#00d4ff]" />
+                <div className="font-mono text-lg font-bold text-[#e2e8e4]">{total}</div>
+                <div className="font-mono text-[9px] uppercase tracking-wider text-[#6b7f74]">Stored</div>
+              </div>
+              <div className="min-w-[82px] rounded-xl border border-[#00ff4130] bg-[#00ff4108] px-3 py-2">
+                <Activity size={14} className="mb-1 text-[#00ff41]" />
+                <div className="font-mono text-lg font-bold text-[#00ff41]">{records.length}</div>
+                <div className="font-mono text-[9px] uppercase tracking-wider text-[#6b7f74]">Visible</div>
+              </div>
+              <div className="min-w-[82px] rounded-xl border border-[#a855f730] bg-[#a855f708] px-3 py-2">
+                <ShieldCheck size={14} className="mb-1 text-[#a855f7]" />
+                <div className="font-mono text-lg font-bold text-[#a855f7]">{filterScore}</div>
+                <div className="font-mono text-[9px] uppercase tracking-wider text-[#6b7f74]">Filter</div>
+              </div>
+            </div>
           </div>
-          
-          <div className="flex flex-wrap items-center gap-2">
-            <div className="flex bg-[#050505] border border-[#1a2620] rounded-lg p-1 mr-2">
-              <button onClick={() => setViewMode('table')} className={`p-1.5 rounded transition-colors ${viewMode === 'table' ? 'bg-[#1a2620] text-[#00ff41]' : 'text-[#6b7f74] hover:text-[#e2e8e4]'}`}>
+
+          <div className="relative z-10 mt-5 flex flex-wrap items-center gap-2 border-t border-[#1a2620] pt-4">
+            <div className="mr-1 flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-widest text-[#6b7f74]"><Activity size={13} className="text-[#00d4ff]" /> Archive controls</div>
+            <div className="flex rounded-lg border border-[#1a2620] bg-[#050505] p-1">
+              <button onClick={() => setViewMode('table')} aria-label="Table view" aria-pressed={viewMode === 'table'} className={`rounded p-1.5 transition-colors ${viewMode === 'table' ? 'bg-[#00d4ff15] text-[#00d4ff]' : 'text-[#6b7f74] hover:text-[#e2e8e4]'}`}>
                 <List size={14} />
               </button>
-              <button onClick={() => setViewMode('grid')} className={`p-1.5 rounded transition-colors ${viewMode === 'grid' ? 'bg-[#1a2620] text-[#00ff41]' : 'text-[#6b7f74] hover:text-[#e2e8e4]'}`}>
+              <button onClick={() => setViewMode('grid')} aria-label="Grid view" aria-pressed={viewMode === 'grid'} className={`rounded p-1.5 transition-colors ${viewMode === 'grid' ? 'bg-[#00d4ff15] text-[#00d4ff]' : 'text-[#6b7f74] hover:text-[#e2e8e4]'}`}>
                 <LayoutGrid size={14} />
               </button>
             </div>
-            
-            <div className="flex gap-2">
-              <button onClick={() => handleExport('json')} className="flex items-center gap-1.5 px-3 py-1.5 bg-[#050505] border border-[#1a2620] rounded-lg font-mono text-xs text-[#6b7f74] hover:text-[#00d4ff] hover:border-[#00d4ff30] transition-all shadow-sm">
-                <Download size={12} /> JSON
-              </button>
-              <button onClick={() => handleExport('csv')} className="flex items-center gap-1.5 px-3 py-1.5 bg-[#050505] border border-[#1a2620] rounded-lg font-mono text-xs text-[#6b7f74] hover:text-[#00d4ff] hover:border-[#00d4ff30] transition-all shadow-sm">
-                <Download size={12} /> CSV
-              </button>
-              <button onClick={handleClear} className="flex items-center gap-1.5 px-3 py-1.5 bg-[#ef444410] border border-[#ef444430] rounded-lg font-mono text-xs text-[#ef4444] hover:bg-[#ef444420] transition-all">
-                <Trash2 size={12} /> CLEAR
-              </button>
-            </div>
+            <button onClick={() => handleExport('json')} className="flex items-center gap-1.5 rounded-lg border border-[#1a2620] bg-[#050505] px-3 py-1.5 font-mono text-xs text-[#6b7f74] transition-all hover:border-[#00d4ff50] hover:text-[#00d4ff]"><Download size={12} /> JSON</button>
+            <button onClick={() => handleExport('csv')} className="flex items-center gap-1.5 rounded-lg border border-[#1a2620] bg-[#050505] px-3 py-1.5 font-mono text-xs text-[#6b7f74] transition-all hover:border-[#00d4ff50] hover:text-[#00d4ff]"><Download size={12} /> CSV</button>
+            <button onClick={handleClear} className="flex items-center gap-1.5 rounded-lg border border-[#ef444430] bg-[#ef444410] px-3 py-1.5 font-mono text-xs text-[#ef4444] transition-all hover:bg-[#ef444420]"><Trash2 size={12} /> CLEAR</button>
           </div>
         </div>
 
         {/* Filters & Search */}
-        <div className="glass-card flex flex-col gap-4 rounded-2xl border border-[#294333] p-4 shadow-[0_14px_35px_rgba(0,0,0,0.2)] md:flex-row">
+        <div className="cyber-panel cyber-panel-glow flex flex-col gap-4 rounded-2xl border border-[#00d4ff25] p-4 shadow-[0_14px_35px_rgba(0,0,0,0.2)] md:flex-row">
           <div className="relative flex-1">
-            <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#3d4f46]" />
+            <Search size={14} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-[#3d4f46]" />
             <input
               value={search} onChange={e => { setSearch(e.target.value); setPage(1); }}
               placeholder="Search IP, city, country, or ISP..."
-              className="w-full rounded-xl border border-[#294333] bg-[#07100b] py-3 pl-9 pr-4 font-mono text-sm text-[#e2e8e4] placeholder-[#3d4f46] transition-colors focus:border-[#00d4ff80]"
+              style={{ paddingLeft: '2.75rem' }}
+              className="w-full rounded-xl border border-[#294333] bg-[#07100b] py-3 pr-4 font-mono text-sm text-[#e2e8e4] placeholder-[#3d4f46] transition-colors focus:border-[#00d4ff80]"
             />
           </div>
-          <div className="flex gap-2 overflow-x-auto pb-1 md:pb-0 hide-scrollbar">
+          <div className="flex items-center gap-2 overflow-x-auto pb-1 md:pb-0 hide-scrollbar">
+            <Filter size={14} className="shrink-0 text-[#a855f7]" />
             {['ALL', 'HIGH', 'MEDIUM', 'LOW'].map(score => (
               <button key={score} onClick={() => { setFilterScore(score as any); setPage(1); }}
                 className={`rounded-xl border px-4 py-2.5 font-mono text-xs tracking-widest transition-all whitespace-nowrap ${

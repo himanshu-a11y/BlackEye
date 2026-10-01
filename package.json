@@ -2,6 +2,8 @@
   "name": "black-eye",
   "private": true,
   "scripts": {
-    "dev": "powershell -ExecutionPolicy Bypass -File .\\start-backend.ps1"
+    "dev": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build"
   }
 }

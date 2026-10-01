@@ -80,7 +80,7 @@ export interface UsernameResult {
 
 export interface HistoryRecord {
   id: string;
-  test_type: string;
+  test_type: 'geolocation' | 'domain' | 'phone' | 'username' | string;
   target: string;
   country: string;
   country_code?: string;

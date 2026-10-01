@@ -30,6 +30,7 @@ const getPlatformIcon = (name: string, category = '', size = 18) => {
   if (n.includes('github') || n.includes('gitlab') || n.includes('bitbucket') || n.includes('replit') || n.includes('code') || n.includes('hack')) return <Code size={size} />;
   if (n.includes('steam') || n.includes('chess') || n.includes('twitch') || category === 'Gaming') return <Gamepad2 size={size} />;
   if (n.includes('vimeo') || n.includes('sound') || n.includes('spotify') || category === 'Media') return <Video size={size} />;
+  if (n.includes('linkedin')) return <span className="font-mono font-black text-[11px]">in</span>;
   if (n.includes('reddit') || n.includes('telegram')) return <MessageCircle size={size} />;
   if (n.includes('twitter') || n === 'x') return <Hash size={size} />;
   if (category === 'Social') return <Share2 size={size} />;
@@ -128,7 +129,7 @@ export default function UsernameEnum() {
                   <span className="w-1.5 h-1.5 rounded-full bg-[#a855f7] pulse-dot" />
                   MODULE: OSINT-03 // IDENTITY ENUM
                 </span>
-                <span className="font-mono text-[11px] text-[#6b7f74]">32 PUBLIC PLATFORMS</span>
+                <span className="font-mono text-[11px] text-[#6b7f74]">33 PUBLIC PLATFORMS</span>
               </div>
               <h1 className="font-mono font-extrabold text-2xl md:text-3xl text-[#e2e8e4] tracking-wide flex items-center gap-3">
                 <User size={28} className="text-[#a855f7] drop-shadow-[0_0_10px_rgba(168,85,247,0.5)]" />
